@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"strconv"
 
 	"syscall"
 
@@ -25,16 +26,16 @@ type Application struct {
 
 // NewApp - создание нового объекта приложения
 func NewApp() *Application {
-	/* 	if len(os.Args) != 2 {
-	   		err := fmt.Errorf("Количество аргументов запуска должно быть равно двум")
-	   		log.Fatal(err)
-	   	}
-	   	maxWorkers, err := strconv.Atoi(os.Args[1])
-	   	if err != nil {
-	   		err = fmt.Errorf("Не удалось конвертировать аргумент командной строки %v в int значение: %v", os.Args[1], err)
-	   		log.Fatal(err)
-	   	}
-	   	consts.MaxWorkers = maxWorkers */
+	if len(os.Args) != 2 {
+		err := fmt.Errorf("Количество аргументов запуска должно быть равно двум")
+		log.Fatal(err)
+	}
+	maxWorkers, err := strconv.Atoi(os.Args[1])
+	if err != nil {
+		err = fmt.Errorf("Не удалось конвертировать аргумент командной строки %v в int значение: %v", os.Args[1], err)
+		log.Fatal(err)
+	}
+	consts.MaxWorkers = maxWorkers
 
 	ctx, cancelFunc := context.WithCancel(context.Background())
 	cacheForCompletedTasks := cache.New(consts.DefaultExpiration, consts.CleanupInterval)
