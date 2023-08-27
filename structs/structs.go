@@ -4,6 +4,19 @@ import "time"
 
 type taskStatus string
 
+func (status taskStatus) ToInt() int {
+	switch status {
+	case InQueue:
+		return 1
+	case InProgres:
+		return 2
+	case Completed:
+		return 3
+	default:
+		return 0
+	}
+}
+
 // Статусы выполнения задач
 const (
 	InQueue   taskStatus = "in_queue"

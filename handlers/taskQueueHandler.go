@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"perx_test/structs"
 	"perx_test/task_controller"
+	"sort"
 )
 
 type tasksQueueResp struct {
@@ -19,6 +20,12 @@ func GetTasksHandler(w http.ResponseWriter, r *http.Request) {
 	task_controller.TaskCtrl.Tasks.Range(func(key string, value interface{}) bool {
 		tasks = append(tasks, value.((*structs.Task)))
 		return true
+	})
+
+	// так как не было указано, по какому полю сортировать и порядок сортировки, выбрал сам
+	// сортируем по статусам: completed > in progres > in queue
+	sort.Slice(tasks, func(i, j int) bool {
+		return tasks[i].Status.ToInt() < tasks[j].Status.ToInt()
 	})
 
 	resp := &tasksQueueResp{
